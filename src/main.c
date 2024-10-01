@@ -1,7 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "crud.h"
+#include "include/crud.h"
+#define CHECK_BUFFER noOfLines == 0 && cursor.wordPointer == NULL
 
 int main(int argc, char **argv)
 {
@@ -17,20 +15,28 @@ int main(int argc, char **argv)
     int choice, a, b;
     char word[256], innerChoice, sentence[LINESIZE];
     while (1)
-    {
-        printf("\n1. print file\n");
-        printf("2. search\n");
-        printf("3. move Cursor\n");
-        printf("4. insertLine\n");
-        printf("5. insertWord\n");
-        // printf("6. updateLine\n");
-        printf("7. updateWord\n");
-        printf("8. deleteLine\n");
-        printf("9. deleteWord\n");
-        printf("10. Undo\n");
-        printf("11. Redo\n");
+    {   
+        printHorizontalLine('*');
+        printf("1. Print File\n");
+        printf("2. Search\n");
+        printf("3. Move Cursor\n");
+        printf("4. Insert Line\n");
+        printf("5. insert Word\n");
+        printf("6. Update Word\n");
+        printf("7. Delete Line\n");
+        printf("8. Delete Word\n");
+        printf("9. Undo\n");
+        printf("10. Redo\n");
+        printf("11. Save\n");
+        printf("12. Exit\n");
         printf("Enter Option:");
         scanf("%d", &choice);
+        //validate if buffer is empty
+        if(CHECK_BUFFER && choice != 4 && choice != 1 && choice != 9 && choice != 10)
+        {
+            printError("file is empty, perform insert line operation first!");
+            continue;
+        }
         switch (choice)
         {
         case 1:
@@ -50,9 +56,8 @@ int main(int argc, char **argv)
             }
             else
             {
-                printf("word not found after cursor\n");
+                printError("Word not found!");
                 // setCursor(buffer, &cursor, 1, 1);
-                // printf("Now cursor pointing at first word!");
             }
             break;
         case 3:
@@ -66,7 +71,7 @@ int main(int argc, char **argv)
             scanf(" %[^\n]s", sentence);
             printf("Want to insert before(y/n): ");
             scanf(" %c", &innerChoice);
-            if (innerChoice == 'y')
+            if (innerChoice == 'y' || CHECK_BUFFER)
                 innerChoice = 'b';
             else
                 innerChoice = 'a';
@@ -86,30 +91,37 @@ int main(int argc, char **argv)
             // addToUndoList(buffer,cursor,)
             redoHead = NULL;
             break;
-        case 7:
+        case 6:
             printf("Enter new word: ");
             scanf(" %s", word);
             updateWord(&cursor, word, &undoHead);
             redoHead = NULL;
             break;
-        case 8:
+        case 7:
             // delete line
             deleteLine(buffer, &cursor, &undoHead);
             redoHead = NULL;
             break;
-        case 9:
+        case 8:
             // delete word
             deleteWord(buffer, &cursor, &undoHead);
             redoHead = NULL;
             break;
-        case 10:
+        case 9:
             // undo
             undoRedoTask(buffer, &cursor, &undoHead, &redoHead);
             print(buffer, cursor, noOfLines);
             break;
-        case 11:
+        case 10:
             undoRedoTask(buffer, &cursor, &redoHead, &undoHead);
             print(buffer, cursor, noOfLines);
+            break;
+        case 11:
+            printf("in save\n");
+            save(fp, buffer, noOfLines);
+            break;
+        case 12:
+            exit(0);
             break;
         default:
             getchar();

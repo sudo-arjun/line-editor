@@ -1,0 +1,5 @@
+#define YEL "\e[0;33m"
+#define SUCCESS "\e[0;32m"
+#define ERR "\e[0;31m"
+#define YELB "\e[43m"
+#define RESET "\e[0m"

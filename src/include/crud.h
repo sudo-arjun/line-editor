@@ -1,5 +1,6 @@
-#include <stdio.h>
-#include "struct.h"
+#include "io.h"
+
+void printHorizontalLine(char designChar);
 
 FILE *openFile(int argc, char **argv);
 Buffer doubleTheSize(Buffer buffer, int *size);
@@ -9,6 +10,7 @@ void print(Buffer buffer, Cursor cursor, int lineNo);
 int mystrcmp(char str1[], char str2[]);
 int wordSearch(Buffer buffer, Cursor *cur, char str[], int NoOfLines);
 void setCursor(Buffer buffer, Cursor *cur, int lineNo, int wordNo, int noOfLines);
+int save(FILE *fp, Buffer buffer, int lineNo);
 
 // CRUD
 

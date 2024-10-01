@@ -1,7 +1,5 @@
-#define LINESIZE 1000
-
 // structures
-
+#define LINESIZE 1000
 typedef struct wordNode
 {
     struct wordNode *previous;
